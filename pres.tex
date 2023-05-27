@@ -2,21 +2,46 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{graphicx}
 \begin{document}
 \title{\textbf{Groupe de tresse et chiffrement}}
 \author{Axel De Masure}
 \date{12 janvier 2021}
 \maketitle
+\graphicspath{ {./} }
 
+L'utilisation des groupes de tresse dans des systèmes de chiffrement est un domaine de recherche actif depuis les années 2000, champ qui a rapidement rencontré des difficultés, tout les systèmes jusqu'alors proposé ont été attaqué (avec brio). Malheureusement, les groupes de tresses étant assez peu connus des cryptologue, peu de tentatives ont à nouveau vu le jour. Dans ce TIPE, je me propose d'implémenter un cryptosystème basé sur les groupes de tresses, et de déterminer si ce système est compétitif dans un monde post quantique.
 
-L'utilisation des groupes de tresse dans des systèmes de chiffrement est un domaine de recherche actif depuis les années 2000, champ qui a rapidement rencontré des difficultés, tout les systèmes jusqu'alors proposé ont été attaqué (avec brio). Malheureusement, les groupes de tresses étant assez peu connus des cryptologue, peu de tentatives ont à nouveau vu le jour.
 \section{Introduction aux groupes de tresse}
 La théorie des tresses est une branche de la topologie algébrique, proche voisine de la théorie des nœuds. Les objets manipulés sont des tresses, composés d'un nombre de brins finis qui s'entremêlent d'une extremité à l'autre (insérer figure).
+\begin{figure}
+\includegraphics{poulet.jpg}
+\end{figure}
+
+
 Naturellement ses objets sont étudiés sous l'œil topologique : si on peut représenter une même tresse d'une infinité de manière différente, seuls les nœuds fondamentaux nous intéresse.
-On retrouve alors une structure de groupe que l'on va détailler ci-dessous.
 
+On fixe $ n \in \mathbb{N} $ notre nombre de brins. On note alors $B_n$ le groupe des tresses à $n$ brins. Le sens de lecture des tresses est l'horizontale de gauche à droite. Les tresses seront représentés par les mots de tresses qui ne tiennent pas compte des déformations. On dispose alors d'ensembles de générateurs pour représenter nos tresses. On a $\sigma_i$ la lettre représentant la tresse où le $i$-ème brin est échangé avec le $i+1$-ème brin. On a ainsi $n-1$ générateurs pour les tresses à $n$ brins, il s'agit de la représentation d'Artin.
+En tant que groupe de représentation, les mots de notre alphabet ont les propriétés suivantes :
 
-On fixe $ n \in \mathbb{N} $ notre nombre de brins. Le sens de lecture des tresses est l'horizontale de gauche à droite.
-   On dispose alors d'ensembles de générateurs pour représenter nos tresses. L'un d'entre eux est l'utilisation des
+$\forall i,j \in [1,n-1]^2, \sigma_i\sigma_j = \sigma_j\sigma_i$ si $|i-j| <= 1$,
 
-\end{document}
+et $\sigma_i\sigma_j\sigma_i = \sigma_j\sigma_i\sigma_j$ si $|i-j| >= 2$. 
+
+La représentation d'Artin possède une tresse canonique, dénoté $\Delta_n$, définie par induction de la manière suivante :
+\[\Delta_0 = 1,\ \Delta_n = \sigma_1\sigma_2\dots\sigma_{n-1}\Delta_{n-1}\] où 1 est la tresse identité.(insérer figure)
+Cette tresse possède plusieurs propriétés facilitant grandement l'implémentation d'un cryptosystème. Tout d'abord, on se place dans $B_n^+$ le monoïde des tresses positives. Il s'agit alors d'un ensemble ordonné lorsque muni de la relation d'ordre $\leq$, en définissant $\leq_L$ l'inégalité à gauche de cette manière : \[a \leq_L b \iff \exists \ c \in B_n^+, b = ac,\] inversement pour $\leq_R$ l'inégalité à droite, et finalement $\leq$ si l'une ou l'autre est vérifié.
+Or on a que $\Delta_n$ est un multiple commun à gauche et à droite des $\sigma_i$, et cela amène au résultat important suivant :
+
+Toute tresse de $B_n$ s'écrit sous la forme $\Delta_n^{k}b$ avec b une tresse positive, avec $k\in\mathbb{Z}$. De plus, la décomposition est unique quand $k$ est maximal.
+
+Cela permet d'introduire les facteurs canoniques, c'est-à-dire les tresses de $B_n^+$ qui divisent $\Delta_n$. Ces facteurs permettent l'écriture d'une forme normale des tresses : Toute tresse $a$ peut être représenté par $(k;a_1,\dots a_r)$ où l'on a l'égalité \[a = \Delta_n^ka_1\dots a_r\]
+Les facteurs canoniques peuvent être représentés sous forme de cycles descendants disjoints, et sont donc aisément manipulés informatiquement.
+
+\section{Implémentation des groupes de tresses}
+\section{Problèmes dans $B_n$}
+\section{Système de chiffrement}
+\section{Performances}
+\section{Conclusion}
+
+\end{document}.
