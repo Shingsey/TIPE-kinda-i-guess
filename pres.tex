@@ -1,4 +1,4 @@
-\documentclass[a4paper, 100pt]{article}
+\documentclass[a4paper,100pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -6,7 +6,8 @@
 \begin{document}
 \title{\textbf{Groupe de tresse et chiffrement}}
 \author{Axel De Masure}
-\date{12 janvier 2021}
+
+\date{52927}
 \maketitle
 \graphicspath{ {./} }
 
@@ -14,9 +15,6 @@ L'utilisation des groupes de tresse dans des systèmes de chiffrement est un dom
 
 \section{Introduction aux groupes de tresse}
 La théorie des tresses est une branche de la topologie algébrique, proche voisine de la théorie des nœuds. Les objets manipulés sont des tresses, composés d'un nombre de brins finis qui s'entremêlent d'une extremité à l'autre (insérer figure).
-\begin{figure}
-\includegraphics{poulet.jpg}
-\end{figure}
 
 
 Naturellement ses objets sont étudiés sous l'œil topologique : si on peut représenter une même tresse d'une infinité de manière différente, seuls les nœuds fondamentaux nous intéresse.
@@ -26,7 +24,7 @@ En tant que groupe de représentation, les mots de notre alphabet ont les propri
 
 $\forall i,j \in [1,n-1]^2, \sigma_i\sigma_j = \sigma_j\sigma_i$ si $|i-j| <= 1$,
 
-et $\sigma_i\sigma_j\sigma_i = \sigma_j\sigma_i\sigma_j$ si $|i-j| >= 2$. 
+et $\sigma_i\sigma_j\sigma_i = \sigma_j\sigma_i\sigma_j$ si $|i-j| >= 2$.
 
 La représentation d'Artin possède une tresse canonique, dénoté $\Delta_n$, définie par induction de la manière suivante :
 \[\Delta_0 = 1,\ \Delta_n = \sigma_1\sigma_2\dots\sigma_{n-1}\Delta_{n-1}\] où 1 est la tresse identité.(insérer figure)
@@ -40,8 +38,23 @@ Les facteurs canoniques peuvent être représentés sous forme de cycles descend
 
 \section{Implémentation des groupes de tresses}
 \section{Problèmes dans $B_n$}
+Un problème des plus utilisés est celui du Problème du Conjugant et ses variantes. Le problème de conjugaison repose sur la difficulté de retrouver une tresse p  partir de $p' = sps^{-1}$ où s est inconnue
+$B_n$ est un groupe infini non commutatif. Il possède deux sous groupes disjoints qui commutent entre eux, noté $LB_n$ et $UB_n$ les groupes engendrés par \newline \centering$LB_n : (\sigma_i)_{1\le i\le \lfloor {\frac {n-1}{2}}\rfloor}$ et
+$UB_n : (\sigma_i)_{\lfloor \frac {n-1}{2}\rfloor + 1 \leq i\leq n-1}$
+
+
+
+
+
+
+
+
+
+
+
+\raggedright
 \section{Système de chiffrement}
 \section{Performances}
 \section{Conclusion}
 
-\end{document}.
+\end{document}
