@@ -1,11 +1,11 @@
 type permutation = int array;;
-type braid = permutation List.t;;
+type braid = int * permutation List.t;;
 
 (*Display functions*)
 
 let display_perm x =
   let n = Array.length x in
-  print_string "\n[| ";
+  print_string "\n[|";
   for i = 1 to n do
     print_int i;
     print_string "\t|";
@@ -58,37 +58,37 @@ let inverse_can (x : permutation) : permutation =
 *)
 let left_pgcd (a : permutation) (b : permutation) : permutation =
   let n = Array.length a in
-  let res = Array.init n (fun x -> x) in
+  let res = Array.init n (fun x -> x+1) in
   let u,v,w = Array.make n 0,Array.make n 0,Array.make n 0 in
   let rec sort c a b head tail =
     if tail > head then
       begin
         let mean = (head+tail)/2 in
-        print_string "head,mean,tail : ";print_int head;print_int mean;print_int tail;print_string "\n";
+        (*print_string "head,mean,tail : ";print_int head;print_int mean;print_int tail;print_string "\n";*)
         sort c a b head mean;
         sort c a b (mean+1) tail;
-        u.(mean) <- a.(c.(mean));
-        v.(mean) <- b.(c.(mean));
+        u.(mean) <- a.(c.(mean) - 1);
+        v.(mean) <- b.(c.(mean) - 1);
         if head < mean then
           begin
             for i = mean - 1 downto head do 
-              u.(i) <- min a.(c.(i)) u.(i+1);
-              v.(i) <- min b.(c.(i)) v.(i+1);
+              u.(i) <- min a.(c.(i) - 1) u.(i+1);
+              v.(i) <- min b.(c.(i) - 1) v.(i+1);
             done;
           end;
-        u.(mean+1) <- a.(c.(mean+1));
-        v.(mean+1) <- b.(c.(mean+1));
+        u.(mean+1) <- a.(c.(mean+1) - 1);
+        v.(mean+1) <- b.(c.(mean+1) - 1);
         if tail > mean + 1 then
           begin
             for i = mean + 2 to tail do
-              u.(i) <- max a.(c.(i)) u.(i-1);
-              v.(i) <- max b.(c.(i)) v.(i-1);
+              u.(i) <- max a.(c.(i) - 1) u.(i-1);
+              v.(i) <- max b.(c.(i) - 1) v.(i-1);
             done;
           end;
           let l,r = ref head, ref (mean+1) in
           for i = head to tail do
-            print_string "\n l,r : ";print_int !l;print_int !r;print_string "\n";
-            if(!l >= mean) || ((!r < tail) && (u.(!l) > u.(!r)) && (v.(!l) > v.(!r))) then
+            (*print_string "\n l,r : ";print_int !l;print_int !r;print_string "\n";*)
+            if(!l > mean) || ((!r <= tail) && (u.(!l) > u.(!r)) && (v.(!l) > v.(!r))) then
               begin w.(i) <- c.(!r); incr r;end
             else begin w.(i) <- c.(!l);incr l;end
           done;
@@ -98,12 +98,30 @@ let left_pgcd (a : permutation) (b : permutation) : permutation =
   sort res a b 0 (n-1);
   inverse_can res;;
 
+
+let equal_can a b = (a = b);;
+
+
+(*Random braids*)
+
+Random.self_init ();;
+let random_canonical n : permutation =
+  let res = Array.init n (fun x -> x+1) in
+  for i = 0 to n-1 do
+    let j = (Random.int (n-i)) + i in
+    let temp = res.(j) in
+    res.(j) <- res.(i);
+    res.(i) <- temp;
+  done;
+  res;;
+
+
+
 let a = [|3;1;2;7;5;4;6|];;
 let b = [|1;3;2;7;5;4;6|];;
+let c = [|7;6;5;4;3;2;1|];;
 let x = left_pgcd a b;;
-display_perm a;;
-display_perm b;;
-display_perm x;;
+display_perm (random_canonical 6);;
 
 
 
