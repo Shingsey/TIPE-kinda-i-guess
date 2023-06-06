@@ -105,6 +105,7 @@ let equal_can a b = (a = b);;
 (*Random braids*)
 
 Random.self_init ();;
+
 let random_canonical n : permutation =
   let res = Array.init n (fun x -> x+1) in
   for i = 0 to n-1 do
@@ -115,7 +116,19 @@ let random_canonical n : permutation =
   done;
   res;;
 
+let rec split (l1 : 'a list) (l2 : 'a list) (l : 'a list) : ('a list) * ('a list) = match l with
+  |[] -> l1,l2;
+  |h::t ->  if Random.int 2 = 0 then split (h::l1) l2 t else split l1 (h::l2) t;;
 
+let rec part_unif (l : 'a list) : 'a list list = match l with
+  |[] -> [];
+  |h::t -> let (a : 'a list),(b : 'a list) = split [] [] t in
+     (h::a)::(part_unif b);;
+
+
+
+let test k =
+  f
 
 let a = [|3;1;2;7;5;4;6|];;
 let b = [|1;3;2;7;5;4;6|];;
