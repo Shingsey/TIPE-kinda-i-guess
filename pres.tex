@@ -1,13 +1,15 @@
 \documentclass[a4paper,100pt]{article}
 \usepackage[utf8]{inputenc}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage{graphicx}
+\usepackage{amsmath,amssymb,graphicx}
 \begin{document}
 \title{\textbf{Groupe de tresse et chiffrement}}
-\author{Axel De Masure}
+\author{Axel De Masure\\ 52927}
 
-\date{52927}
+\newcommand{\Bn}{\mathcal{B}_n}
+\newcommand{\LBn}{\mathcal{LB}_n}
+\newcommand{\UBn}{\mathcal{UB}_n}
+
+\date{}
 \maketitle
 \graphicspath{ {./} }
 
@@ -19,32 +21,30 @@ La théorie des tresses est une branche de la topologie algébrique, proche vois
 
 Naturellement ses objets sont étudiés sous l'œil topologique : si on peut représenter une même tresse d'une infinité de manière différente, seuls les nœuds fondamentaux nous intéresse.
 
-On fixe $ n \in \mathbb{N} $ notre nombre de brins. On note alors $B_n$ le groupe des tresses à $n$ brins. Le sens de lecture des tresses est l'horizontale de gauche à droite. Les tresses seront représentés par les mots de tresses qui ne tiennent pas compte des déformations. On dispose alors d'ensembles de générateurs pour représenter nos tresses. On a $\sigma_i$ la lettre représentant la tresse où le $i$-ème brin est échangé avec le $i+1$-ème brin. On a ainsi $n-1$ générateurs pour les tresses à $n$ brins, il s'agit de la représentation d'Artin.
+On fixe $ n \in \mathbb{N} $ notre nombre de brins. On note alors $\Bn$ le groupe des tresses à $n$ brins. Le sens de lecture des tresses est l'horizontale de gauche à droite. Les tresses seront représentés par les mots de tresses qui ne tiennent pas compte des déformations. On dispose alors d'ensembles de générateurs pour représenter nos tresses. On a $\sigma_i$ la lettre représentant la tresse où le $i$-ème brin est échangé avec le $i+1$-ème brin. On a ainsi $n-1$ générateurs pour les tresses à $n$ brins, il s'agit de la représentation d'Artin.
 En tant que groupe de représentation, les mots de notre alphabet ont les propriétés suivantes :
 
-$\forall i,j \in [1,n-1]^2, \sigma_i\sigma_j = \sigma_j\sigma_i$ si $|i-j| <= 1$,
+$\forall i,j \in [\![ 1,n-1]\!] ^2, \sigma_i\sigma_j = \sigma_j\sigma_i$ si $|i-j| <= 1$,
 
 et $\sigma_i\sigma_j\sigma_i = \sigma_j\sigma_i\sigma_j$ si $|i-j| >= 2$.
 
 La représentation d'Artin possède une tresse canonique, dénoté $\Delta_n$, définie par induction de la manière suivante :
 \[\Delta_0 = 1,\ \Delta_n = \sigma_1\sigma_2\dots\sigma_{n-1}\Delta_{n-1}\] où 1 est la tresse identité.(insérer figure)
-Cette tresse possède plusieurs propriétés facilitant grandement l'implémentation d'un cryptosystème. Tout d'abord, on se place dans $B_n^+$ le monoïde des tresses positives. Il s'agit alors d'un ensemble ordonné lorsque muni de la relation d'ordre $\leq$, en définissant $\leq_L$ l'inégalité à gauche de cette manière : \[a \leq_L b \iff \exists \ c \in B_n^+, b = ac,\] inversement pour $\leq_R$ l'inégalité à droite, et finalement $\leq$ si l'une ou l'autre est vérifié.
+Cette tresse possède plusieurs propriétés facilitant grandement l'implémentation d'un cryptosystème. Tout d'abord, on se place dans $\Bn^+$ le monoïde des tresses positives. Il s'agit alors d'un ensemble ordonné lorsque muni de la relation d'ordre $\leq$, en définissant $\leq_L$ l'inégalité à gauche de cette manière : \[a \leq_L b \Leftrightarrow \exists \ c \in B_n^+, b = ac,\] inversement pour $\leq_R$ l'inégalité à droite, et finalement $\leq$ si l'une ou l'autre est vérifié.
 Or on a que $\Delta_n$ est un multiple commun à gauche et à droite des $\sigma_i$, et cela amène au résultat important suivant :
 
-Toute tresse de $B_n$ s'écrit sous la forme $\Delta_n^{k}b$ avec b une tresse positive, avec $k\in\mathbb{Z}$. De plus, la décomposition est unique quand $k$ est maximal.
+Toute tresse de $\Bn$ s'écrit sous la forme $\Delta_n^{k}b$ avec b une tresse positive, avec $k\in\mathbb{Z}$. De plus, la décomposition est unique quand $k$ est maximal.
 
-Cela permet d'introduire les facteurs canoniques, c'est-à-dire les tresses de $B_n^+$ qui divisent $\Delta_n$. Ces facteurs permettent l'écriture d'une forme normale des tresses : Toute tresse $a$ peut être représenté par $(k;a_1,\dots a_r)$ où l'on a l'égalité \[a = \Delta_n^ka_1\dots a_r\]
+Cela permet d'introduire les facteurs canoniques, c'est-à-dire les tresses de $\Bn^+$ qui divisent $\Delta_n$. Ces facteurs permettent l'écriture d'une forme normale des tresses : Toute tresse $a$ peut être représenté par $(k;a_1,\dots a_r)$ où l'on a l'égalité \[a = \Delta_n^ka_1\dots a_r\]
 Les facteurs canoniques peuvent être représentés sous forme de cycles descendants disjoints, et sont donc aisément manipulés informatiquement.
 
 \section{Implémentation des groupes de tresses}
-\section{Problèmes dans $B_n$}
-Un problème des plus utilisés est celui du Problème du Conjugant et ses variantes. Le problème de conjugaison repose sur la difficulté de retrouver une tresse p  partir de $p' = sps^{-1}$ où s est inconnue.
-
-$B_n$ possède deux sous groupes disjoints qui commutent entre eux, noté $LB_n$ et $UB_n$ les groupes engendrés par \newline \centering$LB_n : (\sigma_i)_{1\le i\le \lfloor {\frac {n-1}{2}}\rfloor}$ et
-$UB_n : (\sigma_i)_{\lfloor \frac {n-1}{2}\rfloor + 1 \leq i\leq n-1}$
-
-
-
+\section{Problèmes dans $\Bn$}
+Un problème des plus utilisés est celui du Problème du Conjugant et ses variantes. Le problème de conjugaison repose sur la difficulté de retrouver une tresse p  partir de $p' = sps^{-1}$ où s est inconnue.\\
+$\Bn$ possède deux sous groupes disjoints qui commutent entre eux, noté $\LBn $ et $\UBn $ les groupes engendrés par
+\[\LBn : (\sigma_i)_{1\le i\le \lfloor {\frac {n-1}{2}}\rfloor}\text{ et }
+\UBn : (\sigma_i)_{\lfloor \frac {n-1}{2}\rfloor + 1 \leq i\leq n-1}
+\]
 
 
 
@@ -53,7 +53,8 @@ $UB_n : (\sigma_i)_{\lfloor \frac {n-1}{2}\rfloor + 1 \leq i\leq n-1}$
 
 
 
-\raggedright
+
+
 \section{Système de chiffrement}
 \section{Performances}
 \section{Conclusion}
